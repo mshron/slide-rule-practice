@@ -38,7 +38,7 @@ export function Controls({ requirements, onRequirementsChange }: ControlsProps) 
         </div>
 
         <div className="space-y-2">
-          <h3 className="font-semibold">Steps</h3>
+          <h3 className="font-semibold">Depth</h3>
           <input
             type="range"
             min={2}
@@ -49,9 +49,16 @@ export function Controls({ requirements, onRequirementsChange }: ControlsProps) 
               steps: parseInt(e.target.value)
             })}
             className="w-full"
+            list="depth-stops"
           />
+          <datalist id="depth-stops">
+            <option value="2"></option>
+            <option value="3"></option>
+            <option value="4"></option>
+            <option value="5"></option>
+          </datalist>
           <div className="text-sm text-gray-600">
-            Steps: {requirements.steps}
+            Depth: {requirements.steps}
           </div>
         </div>
 
@@ -67,7 +74,15 @@ export function Controls({ requirements, onRequirementsChange }: ControlsProps) 
               magnitude: parseInt(e.target.value)
             })}
             className="w-full"
+            list="magnitude-stops"
           />
+          <datalist id="magnitude-stops">
+            <option value="1"></option>
+            <option value="2"></option>
+            <option value="3"></option>
+            <option value="4"></option>
+            <option value="5"></option>
+          </datalist>
           <div className="text-sm text-gray-600">
             Magnitude: {requirements.magnitude}
           </div>
@@ -85,7 +100,13 @@ export function Controls({ requirements, onRequirementsChange }: ControlsProps) 
               significantFigures: parseInt(e.target.value)
             })}
             className="w-full"
+            list="sig-fig-stops"
           />
+          <datalist id="sig-fig-stops">
+            <option value="1"></option>
+            <option value="2"></option>
+            <option value="3"></option>
+          </datalist>
           <div className="text-sm text-gray-600">
             Significant Figures: {requirements.significantFigures}
           </div>

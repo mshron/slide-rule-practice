@@ -1,3 +1,5 @@
+declare module '*.css';
+
 export enum Operation {
   Multiplication = 'multiplication',
   Division = 'division',

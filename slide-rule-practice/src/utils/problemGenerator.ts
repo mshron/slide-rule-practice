@@ -1,25 +1,21 @@
-import { Operation, SlideRuleRequirements, Problem } from '../types';
-import { generateNumber, roundToSignificantFigures } from './numberGenerator';
+import { generateNumber } from './numberGenerator';
+import { Operation, Problem, SlideRuleRequirements } from '../types';
 
 interface EquationNode {
-  type: 'number' | 'operation';
-  value: number | Operation;
+  type: 'operation' | 'number';
+  value: Operation | number;
   children?: EquationNode[];
 }
 
-class SlideRuleProblem implements Problem {
-  private equationTree: EquationNode;
-  public answer: number;
+export class SlideRuleProblem implements Problem {
   public equation: string;
+  public answer: number;
+  private equationTree: EquationNode;
 
   constructor(requirements: SlideRuleRequirements) {
-    this.generateProblem(requirements);
-  }
-
-  private generateProblem(requirements: SlideRuleRequirements) {
     this.equationTree = this.generateEquationTree(requirements);
     this.answer = this.calculateAnswer(this.equationTree);
-    this.equation = this.generateLatexEquation(this.equationTree, requirements.significantFigures);
+    this.equation = this.generateLatexEquation(this.equationTree);
   }
 
   private generateEquationTree(requirements: SlideRuleRequirements): EquationNode {

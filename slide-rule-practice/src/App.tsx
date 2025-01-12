@@ -11,10 +11,20 @@ declare global {
 
 export default function App() {
   const [requirements, setRequirements] = useState<SlideRuleRequirements>({
-    operations: [Operation.Multiplication, Operation.Division],
-    steps: 2,
+    operations: [
+      Operation.Multiplication,
+      Operation.Division,
+      Operation.Square,
+      Operation.Cube,
+      Operation.SquareRoot,
+      Operation.CubeRoot,
+      Operation.Log10,
+      Operation.Ln,
+      Operation.Exp
+    ],
+    steps: 3,
     magnitude: 2,
-    significantFigures: 1
+    significantFigures: 2
   });
 
   const [problem, setProblem] = useState<Problem | null>(null);
