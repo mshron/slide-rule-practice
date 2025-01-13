@@ -31,9 +31,7 @@ export class SlideRuleProblem implements Problem {
         };
       }
 
-      const operation = requirements.operations[
-        Math.floor(Math.random() * requirements.operations.length)
-      ];
+      const operation = getWeightedOperation(requirements.operations);
 
       // Handle unary operations
       if ([Operation.Square, Operation.Cube, Operation.SquareRoot, Operation.CubeRoot, Operation.Log10, Operation.Ln, Operation.Sin, Operation.Cos, Operation.Tan].includes(operation)) {
@@ -165,4 +163,41 @@ function normalizeAngleForTrig(value: number): number {
     }
   }
   return value;
+}
+
+function getWeightedOperation(operations: Operation[]): Operation {
+  const random = Math.random();
+
+  // Get all operations of each type
+  const multDiv = operations.filter(op =>
+    op === Operation.Multiplication || op === Operation.Division
+  );
+  const intermediate = operations.filter(op => [
+    Operation.Square,
+    Operation.Cube,
+    Operation.SquareRoot,
+    Operation.CubeRoot,
+    Operation.Log10,
+    Operation.Ln,
+    Operation.Exp
+  ].includes(op));
+  const trig = operations.filter(op => [
+    Operation.Sin,
+    Operation.Cos,
+    Operation.Tan
+  ].includes(op));
+
+  // Calculate total weight (3x + 2x + 1x for each category)
+  const totalWeight = (multDiv.length * 3) + (intermediate.length * 2) + trig.length;
+
+  // Select based on weighted probability
+  const weightedRandom = random * totalWeight;
+
+  if (weightedRandom < multDiv.length * 3) {
+    return multDiv[Math.floor(Math.random() * multDiv.length)];
+  } else if (weightedRandom < (multDiv.length * 3) + (intermediate.length * 2)) {
+    return intermediate[Math.floor(Math.random() * intermediate.length)];
+  } else {
+    return trig[Math.floor(Math.random() * trig.length)];
+  }
 }
