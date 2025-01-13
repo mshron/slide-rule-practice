@@ -36,7 +36,7 @@ export class SlideRuleProblem implements Problem {
       ];
 
       // Handle unary operations
-      if ([Operation.Square, Operation.Cube, Operation.SquareRoot, Operation.CubeRoot, Operation.Log10, Operation.Ln].includes(operation)) {
+      if ([Operation.Square, Operation.Cube, Operation.SquareRoot, Operation.CubeRoot, Operation.Log10, Operation.Ln, Operation.Sin, Operation.Cos, Operation.Tan].includes(operation)) {
         const child = generateSubtree(depth - 1, nodesCreated + 1);
         return {
           type: 'operation',
@@ -89,6 +89,12 @@ export class SlideRuleProblem implements Problem {
         return Math.log(childValues[0]);
       case Operation.Exp:
         return Math.exp(childValues[0]);
+      case Operation.Sin:
+        return Math.sin(normalizeAngleForTrig(childValues[0]) * Math.PI / 180);
+      case Operation.Cos:
+        return Math.cos(normalizeAngleForTrig(childValues[0]) * Math.PI / 180);
+      case Operation.Tan:
+        return Math.tan(normalizeAngleForTrig(childValues[0]) * Math.PI / 180);
       default:
         return 0;
     }
@@ -121,6 +127,15 @@ export class SlideRuleProblem implements Problem {
         return `\\ln{${childLatex[0]}}`;
       case Operation.Exp:
         return `e^{${childLatex[0]}}`;
+      case Operation.Sin:
+        const sinAngle = normalizeAngleForTrig(this.calculateAnswer(node.children![0]));
+        return `\\sin{(${sinAngle.toFixed(1)}°)}`;
+      case Operation.Cos:
+        const cosAngle = normalizeAngleForTrig(this.calculateAnswer(node.children![0]));
+        return `\\cos{(${cosAngle.toFixed(1)}°)}`;
+      case Operation.Tan:
+        const tanAngle = normalizeAngleForTrig(this.calculateAnswer(node.children![0]));
+        return `\\tan{(${tanAngle.toFixed(1)}°)}`;
       default:
         return '?';
     }
@@ -133,4 +148,21 @@ export class SlideRuleProblem implements Problem {
 
 export function generateProblem(requirements: SlideRuleRequirements): Problem {
   return new SlideRuleProblem(requirements);
+}
+
+function normalizeAngleForTrig(value: number): number {
+  // Convert to degrees if the number is too large
+  if (Math.abs(value) > 10) {
+    // Normalize to 0-360 range
+    value = value % 360;
+    // If result is negative, make it positive
+    if (value < 0) value += 360;
+    // If result is > 90, try to reduce it using trig identities
+    if (value > 90) {
+      if (value <= 180) value = 180 - value;  // sin(x) = sin(180-x)
+      else if (value <= 270) value = value - 180;  // sin(x) = -sin(x-180)
+      else value = 360 - value;  // sin(x) = -sin(360-x)
+    }
+  }
+  return value;
 }

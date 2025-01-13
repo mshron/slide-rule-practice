@@ -9,7 +9,10 @@ export enum Operation {
   CubeRoot = 'cubeRoot',
   Log10 = 'log10',
   Ln = 'ln',
-  Exp = 'exp'
+  Exp = 'exp',
+  Sin = 'sin',
+  Cos = 'cos',
+  Tan = 'tan'
 }
 
 export interface SlideRuleRequirements {

@@ -20,7 +20,10 @@ export default function App() {
       Operation.CubeRoot,
       Operation.Log10,
       Operation.Ln,
-      Operation.Exp
+      Operation.Exp,
+      Operation.Sin,
+      Operation.Cos,
+      Operation.Tan
     ],
     steps: 3,
     magnitude: 2,
